@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="331dp"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:text="Please Choose Your Choice"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.155"
+        tools:ignore="OnClick" />
+
+    <Button
+        android:id="@+id/generateDynamicPDF"
+        android:layout_width="254dp"
+        android:layout_height="54dp"
+        android:gravity="center"
+        android:onClick="generateDynamicPDF"
+        android:text="Generate Dynamic PDF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="186dp"
+        tools:ignore="MissingConstraints,OnClick" />
+
+    <Button
+        android:id="@+id/generateStaticPDF"
+        android:layout_width="255dp"
+        android:layout_height="51dp"
+        android:onClick="generateStaticPDF"
+        android:text="Generate Static PDF"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="267dp"
+        tools:ignore="MissingConstraints,OnClick" />
+
+    <ListView
+        android:id="@+id/list_item"
+        android:layout_width="409dp"
+        android:layout_height="411dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="319dp"
+        tools:ignore="MissingConstraints" />
+
+
+</LinearLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:id="@+id/linearLayoutList"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="10sp"
+        android:layout_height="60sp">
+
+        <TextView
+            android:id="@+id/rollNumber"
+            android:layout_width="0sp"
+            android:layout_weight="4"
+            android:gravity="center|start"
+            android:paddingStart="5sp"
+            android:textSize="20sp"
+            android:layout_margin="10sp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0sp"
+            android:layout_weight="4"
+            android:gravity="center|start"
+            android:paddingStart="5sp"
+            android:textSize="20sp"
+            android:layout_margin="10sp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/sClass"
+            android:layout_width="0sp"
+            android:layout_weight="4"
+            android:gravity="center|start"
+            android:paddingStart="5sp"
+            android:textSize="20sp"
+            android:layout_margin="10sp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/section"
+            android:layout_width="0sp"
+            android:layout_weight="4"
+            android:gravity="center|start"
+            android:paddingStart="5sp"
+            android:textSize="20sp"
+            android:layout_margin="10sp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/gender"
+            android:layout_width="0sp"
+            android:layout_weight="4"
+            android:gravity="center|start"
+            android:paddingStart="5sp"
+            android:textSize="20sp"
+            android:layout_margin="10sp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/totalMarks"
+            android:layout_width="0sp"
+            android:layout_weight="4"
+            android:gravity="center|start"
+            android:paddingStart="5sp"
+            android:textSize="20sp"
+            android:layout_margin="10sp"
+            android:layout_height="match_parent"/>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

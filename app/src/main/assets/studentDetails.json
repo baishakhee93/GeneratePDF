@@ -1,0 +1,226 @@
+{
+  "data": {
+    "Students": [
+      {
+        "Roll_Number": "1",
+        "Name": "Ayush",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "600"
+
+      },
+      {
+        "Roll_Number": "2",
+        "Name": "Veeresh",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "3",
+        "Name": "MANISHA",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "600"
+      },
+      {
+        "Roll_Number": "4",
+        "Name": "DHARAMBIR SINGH",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "5",
+        "Name": "PREETI SHARMA",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "6",
+        "Name": "RAJA",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "7",
+        "Name": "RAJU KUMAR",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "8",
+        "Name": "RAJA",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "9",
+        "Name": "MUKESH KUMAR",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "10",
+        "Name": "NAMITA CHHABRA ",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Fmale",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "11",
+        "Name": "RANI KUMARI",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "12",
+        "Name": "ARTI KUMARI",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Fmale",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "13",
+        "Name": "SHALINI KUMARI",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "14",
+        "Name": "SEEMA YADAV",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "15",
+        "Name": "MANISHA GUPTA",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      } ,{
+        "Roll_Number": "16",
+        "Name": "ASMA DABAS",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "17",
+        "Name": "Durga",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "18",
+        "Name": "Prem",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "19",
+        "Name": "VAISHALI SINGH",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "20",
+        "Name": "KM. VANDANA SINGH",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "21",
+        "Name": "RAGNI KUMARI",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      },
+      {
+        "Roll_Number": "22",
+        "Name": "Babita",
+        "Class": "10",
+        "Section": "B",
+        "Gender": "Fmale",
+        "Total_Marks": "400"
+      },
+      {
+        "Roll_Number": "23",
+        "Name": "Jayshree",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Fmale",
+        "Total_Marks": "600"
+      },
+      {
+        "Roll_Number": "24",
+        "Name": "Akash",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Male",
+        "Total_Marks": "600"
+      }, {
+        "Roll_Number": "25",
+        "Name": "Akanchha",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Fmale",
+        "Total_Marks": "500"
+      }, {
+        "Roll_Number": "26",
+        "Name": "Pooja",
+        "Class": "10",
+        "Section": "A",
+        "Gender": "Fmale",
+        "Total_Marks": "600"
+      }, {
+        "Roll_Number": "27",
+        "Name": "ghf",
+        "Class": "10",
+        "Section": "B",
+        "Gender": "Male",
+        "Total_Marks": "400"
+      } ,{
+        "Roll_Number": "28",
+        "Name": "Abc",
+        "Class": "10",
+        "Section": "B",
+        "Gender": "Male",
+        "Total_Marks": "500"
+      }
+    ]
+  }
+}
