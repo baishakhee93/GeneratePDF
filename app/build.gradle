@@ -3,6 +3,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/home/baishakhee/Documents/Projects/GeneratePDF/app/keystore/keystore.jks')
+            storePassword 'generatepdf'
+            keyAlias 'GeneratePDF'
+            keyPassword 'generatepdf'
+        }
+    }
     compileSdk 30
 
     defaultConfig {
@@ -19,6 +27,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -32,6 +41,9 @@ android {
             }
         }
     }
+    compileSdkVersion 30
+    buildToolsVersion '30.0.3'
+    ndkVersion '22.0.6917172 rc1'
 }
 
 dependencies {
