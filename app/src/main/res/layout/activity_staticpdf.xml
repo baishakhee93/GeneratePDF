@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    tools:context=".StaticPdfActivity">
+
+
+
+    <Button
+        android:id="@+id/generateStaticPDF"
+        android:layout_width="255dp"
+        android:layout_height="51dp"
+        android:onClick="clickStaticPDF"
+        android:text="Click Static PDF"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="267dp"
+        tools:ignore="MissingConstraints,OnClick" />
+
+
+
+</LinearLayout>

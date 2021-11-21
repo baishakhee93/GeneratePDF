@@ -43,7 +43,7 @@
         android:layout_height="51dp"
         android:onClick="generateStaticPDF"
         android:text="Generate Static PDF"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="267dp"

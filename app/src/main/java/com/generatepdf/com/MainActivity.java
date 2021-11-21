@@ -8,13 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
+
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -53,19 +54,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     String file_name_path= "";
     int PERMISSION_ALL = 5;
-    public static final String[][] DATA = {
-            {"John Edward Jr.", "AAA"},
-            {"Pascal Einstein W. Alfi", "BBB"},
-    };
     String[] PERMISSIONS = {
 
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -102,8 +99,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void generateStaticPDF(View view) {
-       /// createpdf();
+        Intent intent=new Intent(MainActivity.this,StaticPdfActivity.class);
+        intent.putExtra("studentList", (Serializable) studentModels);
+        startActivity(intent);
+
     }
+
 
     public void generateDynamicPDF(View view)  {
         try {
@@ -415,5 +416,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
 
 }

@@ -1,6 +1,8 @@
 package com.generatepdf.com;
 
-public class StudentModel {
+import java.io.Serializable;
+
+public class StudentModel implements Serializable {
     String rollNumber,name,classes,section,gender,totalMarks;
 
     public StudentModel(String rollNumber, String name, String classes, String section, String gender, String totalMarks) {
