@@ -1,40 +1,56 @@
 package com.generatepdf.com;
 
+import static com.itextpdf.kernel.pdf.PdfName.Footer;
+import static com.itextpdf.text.html.HtmlTags.IMG;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.os.StrictMode;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceCmyk;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.events.IEventHandler;
+import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.Style;
-import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.Image;
@@ -45,11 +61,10 @@ import com.itextpdf.layout.element.TabStop;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TabAlignment;
 import com.itextpdf.layout.property.TextAlignment;
-
+import com.itextpdf.layout.property.VerticalAlignment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -63,6 +78,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     String file_name_path= "";
     int PERMISSION_ALL = 5;
+    @SuppressLint("StaticFieldLeak")
+    public static String createdDate;
+    String GROUP_KEY_WORK_MESSAAGE = "com.generatepdf.com.WORK_MESSAGE";
+
     String[] PERMISSIONS = {
 
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -85,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         if (!hasPermissions(MainActivity.this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS, PERMISSION_ALL);
         }
-        final String fileName = "Student List";
+        final String fileName = "Student List"+createdDate;
 
         file_name_path = fileName + ".pdf";
         String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
@@ -106,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void generateDynamicPDF(View view)  {
         try {
             // this method used by iText7  library
@@ -183,9 +203,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void createPdf() throws IOException{
         try {
-            final String fileName = "Student List";
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("ddMMyyyyHHmmss");
+            Calendar calendar1 = Calendar.getInstance();
+            createdDate = simpleDateFormat1.format(calendar1.getTime());
+            final String fileName = "Student List"+"_"+createdDate;
             file_name_path = fileName + ".pdf";
             String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
             File file = new File(pdfPath, file_name_path);
@@ -193,10 +218,25 @@ public class MainActivity extends AppCompatActivity {
             com.itextpdf.kernel.pdf.PdfWriter pdfWriter = new PdfWriter(file);
             com.itextpdf.kernel.pdf.PdfDocument pdfDocument = new PdfDocument(pdfWriter);
 
-            pdfDocument.addNewPage();
             com.itextpdf.layout.Document document = new Document(pdfDocument, PageSize.A4);
             document.setMargins(36, 36, 36, 36);
+            pdfDocument.addNewPage();
 
+            PageXofY event = new PageXofY(pdfDocument);
+            pdfDocument.addEventHandler(PdfDocumentEvent.START_PAGE, new Header("Baishakhee"));
+            pdfDocument.addEventHandler(PdfDocumentEvent.END_PAGE, event);
+
+
+            Drawable d = getDrawable(R.drawable.welcome_friends);
+            Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] bitmapData = stream.toByteArray();
+            ImageData imageData = ImageDataFactory.create(bitmapData);
+            Image image = new Image(imageData);
+
+            IEventHandler handler = new TransparentImage(image);
+            pdfDocument.addEventHandler(PdfDocumentEvent.END_PAGE, handler);
 
             Style headerBold = new Style();
             PdfFont font = PdfFontFactory.createFont(FontConstants.COURIER);
@@ -227,14 +267,9 @@ public class MainActivity extends AppCompatActivity {
             String createdDate = simpleDateFormat.format(calendar.getTime());
             String dates = createdDate;
 
-            Drawable d = getDrawable(R.drawable.welcome_friends);
-            Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] bitmapData = stream.toByteArray();
-            ImageData imageData = ImageDataFactory.create(bitmapData);
-            Image image = new Image(imageData);
+
             document.add(image);
+
 
             Paragraph header = new Paragraph("Student List").addStyle(headerBold).setTextAlignment(TextAlignment.CENTER);
             document.add(header);
@@ -276,16 +311,20 @@ public class MainActivity extends AppCompatActivity {
             p003.add("abc9534@gmail.com");
             document.add(p003);
 
-            float colimnWidth[] = {50f, 100f, 400f, 100f, 100f, 100f, 100f};
+            /*float colimnWidth1[] = {50f, 150f, 400f, 100f, 150f, 100f, 100f};
+            Table table1 = new Table(colimnWidth1);*/
+            float colimnWidth[] = {50f, 150f, 400f, 100f, 150f, 100f, 100f};
             Table table = new Table(colimnWidth);
+            table.addCell(getCell("SI. No.", TextAlignment.CENTER).addStyle(normalBold).setFontColor(ColorConstants.WHITE).setBackgroundColor(new DeviceRgb(66,133,244)));
+            table.addCell(getCell("Roll Number", TextAlignment.CENTER).addStyle(normalBold).setFontColor(ColorConstants.WHITE).setBackgroundColor(new DeviceRgb(66,133,244)));
 
-            table.addCell(getCell("SI. No.", TextAlignment.CENTER).addStyle(normalBold));
-            table.addCell(getCell("Roll_Number", TextAlignment.CENTER).addStyle(normalBold));
-            table.addCell(getCell("Name", TextAlignment.CENTER).addStyle(normalBold));
-            table.addCell(getCell("Class", TextAlignment.CENTER).addStyle(normalBold));
-            table.addCell(getCell("Section", TextAlignment.CENTER).addStyle(normalBold));
-            table.addCell(getCell("Gender", TextAlignment.CENTER).addStyle(normalBold));
-            table.addCell(getCell("Total Marks", TextAlignment.CENTER).addStyle(normalBold));
+            table.addCell(getCell("Name", TextAlignment.CENTER).addStyle(normalBold).setFontColor(ColorConstants.WHITE).setBackgroundColor(new DeviceRgb(66,133,244)));
+            table.addCell(getCell("Class", TextAlignment.CENTER).addStyle(normalBold).setFontColor(ColorConstants.WHITE).setBackgroundColor(new DeviceRgb(66,133,244)));
+            table.addCell(getCell("Section", TextAlignment.CENTER).addStyle(normalBold).setFontColor(ColorConstants.WHITE).setBackgroundColor(new DeviceRgb(66,133,244)));
+            table.addCell(getCell("Gender", TextAlignment.CENTER).addStyle(normalBold).setFontColor(ColorConstants.WHITE).setBackgroundColor(new DeviceRgb(66,133,244)));
+            table.addCell(getCell("Total Marks", TextAlignment.CENTER).addStyle(normalBold).setFontColor(ColorConstants.WHITE).setBackgroundColor(new DeviceRgb(66,133,244)));
+
+           // document.add(table);
 
             if (studentModels != null) {
                 if (studentModels.size() > 0) {
@@ -307,8 +346,8 @@ public class MainActivity extends AppCompatActivity {
 
                                     } else {
                                         table.addCell(getCell(s, TextAlignment.CENTER).addStyle(normal));
-                                        table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getRollNumber(), TextAlignment.CENTER).addStyle(normal));
+                                        table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getClasses(), TextAlignment.CENTER).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getSection(), TextAlignment.CENTER).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getGender(), TextAlignment.CENTER).addStyle(normal));
@@ -322,8 +361,8 @@ public class MainActivity extends AppCompatActivity {
                                     if (studentModels.get(i).getName().length() > 40) {
 
                                         table.addCell(getCell(s, TextAlignment.CENTER).addStyle(normal));
-                                        table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getRollNumber(), TextAlignment.CENTER).addStyle(normal));
+                                        table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getClasses(), TextAlignment.CENTER).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getSection(), TextAlignment.CENTER).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getGender(), TextAlignment.CENTER).addStyle(normal));
@@ -331,8 +370,8 @@ public class MainActivity extends AppCompatActivity {
 
                                     } else {
                                         table.addCell(getCell(s, TextAlignment.CENTER).addStyle(normal));
-                                        table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getRollNumber(), TextAlignment.CENTER).addStyle(normal));
+                                        table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getClasses(), TextAlignment.CENTER).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getSection(), TextAlignment.CENTER).addStyle(normal));
                                         table.addCell(getCell(studentModels.get(i).getGender(), TextAlignment.CENTER).addStyle(normal));
@@ -347,8 +386,8 @@ public class MainActivity extends AppCompatActivity {
                                     String name1 = studentModels.get(i).getName().substring(0, 40);
                                     String name2 = studentModels.get(i).getName().substring(40, (int) length);
                                     table.addCell(getCell(s, TextAlignment.CENTER).addStyle(normal));
-                                    table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                     table.addCell(getCell(studentModels.get(i).getRollNumber(), TextAlignment.CENTER).addStyle(normal));
+                                    table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                     table.addCell(getCell(studentModels.get(i).getClasses(), TextAlignment.CENTER).addStyle(normal));
                                     table.addCell(getCell(studentModels.get(i).getSection(), TextAlignment.CENTER).addStyle(normal));
                                     table.addCell(getCell(studentModels.get(i).getGender(), TextAlignment.CENTER).addStyle(normal));
@@ -356,8 +395,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 } else {
                                     table.addCell(getCell(s, TextAlignment.CENTER).addStyle(normal));
-                                    table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                     table.addCell(getCell(studentModels.get(i).getRollNumber(), TextAlignment.CENTER).addStyle(normal));
+                                    table.addCell(getCell(studentModels.get(i).getName(), TextAlignment.LEFT).addStyle(normal));
                                     table.addCell(getCell(studentModels.get(i).getClasses(), TextAlignment.CENTER).addStyle(normal));
                                     table.addCell(getCell(studentModels.get(i).getSection(), TextAlignment.CENTER).addStyle(normal));
                                     table.addCell(getCell(studentModels.get(i).getGender(), TextAlignment.CENTER).addStyle(normal));
@@ -388,12 +427,12 @@ public class MainActivity extends AppCompatActivity {
             document.add(p15);
 
             document.add((IBlockElement) dashedLine);
+
+            event.writeTotal(pdfDocument);
+
             document.close();
-            //   Toast.makeText(mContext, "PDF Created", Toast.LENGTH_SHORT).show();
 
-            System.out.println("sOrder.....PDF Created....file...." + file);
-            System.out.println("sOrder.....PDF Created.....pdfWriter..." + pdfWriter);
-
+           addNotification();
             viewPdfFile();
         }catch (Exception e){
             e.printStackTrace();
@@ -417,6 +456,75 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void addNotification() {
+        String pdfPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+        File file = new File(pdfPath +"/"+ file_name_path);
+        Drawable d = getDrawable(R.drawable.welcome_friends);
+        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+        if (!file.exists()){
+            Toast.makeText(this, "File doesn't exists", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent viewPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationChannel channel=new NotificationChannel("shakhee",
+                "baishakhee",
+                NotificationManager.IMPORTANCE_HIGH);
+        NotificationManager manager=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.createNotificationChannel(channel);
 
-}
+        //Creating the notification object
+        NotificationCompat.Builder notification=new NotificationCompat.Builder(this,"shakhee");
+        //notification.setAutoCancel(true);
+        notification.setContentTitle(file_name_path);
+        notification.setContentText("Download in progress");
+        notification.setSmallIcon(R.drawable.ic_baseline_download_24);
+        notification.setPriority(NotificationCompat.PRIORITY_HIGH);
+        notification.setAutoCancel(true);
+        notification.setColor(ContextCompat.getColor(getApplicationContext(), R.color.purple_200));
+        notification.setCategory(Notification.CATEGORY_REMINDER);
+        notification.setGroup(file_name_path);
+        notification.setStyle(new NotificationCompat.BigPictureStyle()
+                .bigPicture(bitmap));
+        notification.setLargeIcon(bitmap);
+        notification.setGroupSummary(true);
+        notification.setContentIntent(pendingIntent);
+        int PROGRESS_MAX = 100;
+        int PROGRESS_CURRENT = 0;
+        notification.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
+        notification.setContentText("Download complete ")
+
+                .setProgress(0,0,false);
+           notification.addAction(R.drawable.ic_baseline_share_24,"VIEW", viewPendingIntent) ; // #1
+
+        if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .build();
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new
+                    NotificationChannel("Shakhee", "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(false);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            notification.setChannelId("Shakhee");
+            assert manager != null;
+            manager.createNotificationChannel(notificationChannel);
+        }
+        assert manager != null;
+
+        manager.notify(( int ) System. currentTimeMillis () ,
+                notification.build()) ;
+
+    }
+
+    }
